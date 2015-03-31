@@ -12,7 +12,7 @@ To create a system where users may easily create polls which engage users in dee
 
 ###Models and Relationships
 
-<img src="https://s3.amazonaws.com/nighnight.com/assets/LPSchemeDesign.png" alt="Schema Design" style="width: 100%;"> 
+<img src="https://s3.amazonaws.com/nighnight.com/assets/LPSchemeDesign.png" alt="Schema Design v2" style="width: 100%;"> 
 
 ###EndPoints
 **/api/user(?offset=0+limit=0)**
