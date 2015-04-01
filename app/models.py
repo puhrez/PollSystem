@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+from sqlalchemy.schema import UniqueConstraint
 """
 TODO:
 add as_dict() methods http://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json/11884806#11884806
@@ -105,6 +106,9 @@ class Effect(db.Model):
 
 class Token(db.Model):
   __tablename__ = 'token'
+  __table_args__ = (
+    UniqueConstraint('poll_id', 'text', name='poll_id_text_uix'),
+  )
   """
   This class represents a single token that has:
     a unique id,
