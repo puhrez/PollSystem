@@ -15,7 +15,7 @@ To create a system where users may easily create polls which engage users in dee
 <img src="https://s3.amazonaws.com/nighnight.com/assets/LPSchemeDesignV2.png" alt="Schema Design v2" style="width: 100%;"> 
 
 ###EndPoints
-**/api/user(?offset=0+limit=0)**
+**/api/user(?offset=0&limit=0)**
 
 * GET - Retrieves all users starting from the record at offset + 1, only taking to limit
 * POST - Creates a new user
@@ -26,7 +26,7 @@ To create a system where users may easily create polls which engage users in dee
 * PUT - Updates the user's information
 * DELETE - Deletes the user
 
-**/api/polls(?offset=0+limit=0)**
+**/api/polls(?offset=0&limit=0)**
 
 * GET - Retrieves all polls starting from the record at offset + 1, only taking o limit
 * POST - Creates a new poll
@@ -37,7 +37,7 @@ To create a system where users may easily create polls which engage users in dee
 * PUT - Update the poll's information
 * DELETE - Deletes the Poll
 
-**/api/questions(?offset=0+limit=0)**
+**/api/questions(?offset=0&limit=0)**
 
 * GET - Retrieves all questions starting from the record at offset + 1, only taking to limit
 * POST - Creates a new question
@@ -48,7 +48,7 @@ To create a system where users may easily create polls which engage users in dee
 * PUT - Updates the question's information
 * DELETE - Deletes the question
 
-**/api/effects(?offset=0+limit=0)**
+**/api/effects(?offset=0&limit=0)**
 
 * GET - Retrieves all effects starting from the record at offset + 1, only taking to limit
 * POST - Creates a new effects
@@ -59,7 +59,7 @@ To create a system where users may easily create polls which engage users in dee
 * PUT - Updates the effect information
 * DELETE - Deletes the effect
 
-**/api/tokens(?offset=0+limit=0)**
+**/api/tokens(?offset=0&limit=0)**
 
 * GET - Retrieves all tokens starting from the record at offset + 1, only taking to limit
 * POST - Creates a new tokens
