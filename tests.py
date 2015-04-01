@@ -43,8 +43,11 @@ class ModelTests(unittest.TestCase):
 
   def test_user_create(self):
     u = User(email="test@example", name="John")
-  
+    db.session.add(u)
+    db.commit()
+
   def test_poll_create(self):
+    p = Poll(name="test poll")
   def test_question_create(self):
   def test_token_create(self):
   def test_effect_create(self):

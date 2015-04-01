@@ -23,12 +23,14 @@ class User(db.Model):
     a name
     and a set of polls
   Has a many-to-many relationship with Poll
+  Has a one-to-many relationship with Poll as admin
   """
   __tablename__ = 'user'
   id = db.Column(db.Integer, primary_key=True)
   email = db.Column(db.String(64), index=True, unique=True)
   password = db.Column(db.String(10))
   name = db.Column(db.String(64))
+  adminpolls = db.relationship('Poll', lazy='dynamic', backref='admin')
   polls = db.relationship('Poll', secondary=memberships, lazy='dynamic',
     backref=db.backref('users', lazy='dynamic'))
 
@@ -46,7 +48,6 @@ class Poll(db.Model):
     a set of users (refered to from the users backref)
     a set of tokens
   Has a many-to-many relationship with User
-  Has a reference to it's admin
   Has a one-to-many relationship with Question
   Has a one-to-many relationship with Token
   """
@@ -56,7 +57,6 @@ class Poll(db.Model):
   timestamp = db.Column(db.DateTime, server_default=db.func.now())
   questions = db.relationship('Question', backref='poll', lazy='dynamic')
   tokens = db.relationship('Token', backref='poll', lazy='dynamic')
-  admin = db.Column(db.Integer, db.ForeignKey('user.id'))
 
   def __repr__(self):
     return "<Polls %r>" % (self.name)
