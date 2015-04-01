@@ -24,3 +24,19 @@ Accessing a token's poll
 Accessing a question's effects
 Accessing an effect's token
 """
+
+import unittest
+from app.models import User, Poll, Token, Question, Effect
+from app import db
+
+class ModelTests(unittest.TestCase):
+  def setUp(self):
+    app.config['TESTING'] = True
+    app.config['WTF_CSRF_ENABLED'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://polladmin:pollMaster@localhost/pollapptest'
+    self.app = app.test_client()
+    db.create_all()
+
+  def tearDown(self):
+    db.session.remove()
+    db.drop_all()
