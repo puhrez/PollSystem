@@ -3,17 +3,10 @@
 """
 TODO:
 Write tests for:
-Token creation
 Effect creation
 
-Adding several questions to a Poll
-Adding several tokens to a Poll
 Adding several effects to a question
 
-Accessing a poll's questions
-Acessing a question's poll
-Accessing a poll's tokens
-Accessing a token's poll
 Accessing a question's effects
 Accessing an effect's token
 """
@@ -104,6 +97,94 @@ class ModelTests(unittest.TestCase):
     assert q in p.questions.all()
     assert q4 not in p.questions.all()
     assert q4 in p2.questions.all()
+    assert q4.poll == p2
+    assert q3.poll == p
+
+  def test_poll_token_relationship(self):
+    #creating polls
+    p = Poll(name='test1')
+    p2 = Poll(name='test2')
+    db.session.add(p)
+    db.session.add(p2)
+    db.session.commit()
+
+    #creating tokens
+    t = Token(text="token1")
+    t2 = Token(text="token2")
+    db.session.add(t)
+    db.session.add(t2)
+    db.session.commit()
+    p.tokens.append(t)
+    p2.tokens.append(t2)
+
+    db.session.add(p)
+    db.session.add(p2)
+    db.session.commit()
+
+    p = db.session.query(Poll).get(p.id)
+    p2 = db.session.query(Poll).get(p2.id)
+    assert p.tokens.count() == 1
+    assert t in p.tokens.all()
+    assert t not in p2.tokens.all()
+    assert t.poll is p
+    assert t2.poll is not p
+
+  def test_question_effect_token_relationship(self):
+    #creating questions
+    q = Question(text='question1')
+    db.session.add(q)
+    db.session.commit()
+
+    #creating tokens, value is 0 by default, just making it explicit
+    t = Token(text="token1", value=0)
+    t2 = Token(text="token2", value=0)
+    db.session.add(t)
+    db.session.add(t2)
+    db.session.commit()
+
+    #creating effects
+    e = Effect(value=3, question_id=q.id, token_id=t.id)
+    e2 = Effect(value=-4, question_id=q.id, token_id=t2.id)
+    db.session.add(e)
+    db.session.add(e2)
+    db.session.commit()
+
+    #checking relationships
+    q = db.session.query(Question).get(e.question_id)
+    t = db.session.query(Token).get(e.token_id)
+    t2 = db.session.query(Token).get(e2.token_id)
+    assert e and e2 in q.effects.all()
+    assert t.value + e.value == 3
+    assert t2.value + e2.value == -4
+
+  def test_effects_affect_tokens(self):
+    #creating tokens, value is 0 by default, just making it explicit
+    t = Token(text="token1", value=0)
+    t2 = Token(text="token2", value=0)
+    db.session.add(t)
+    db.session.add(t2)
+    db.session.commit()
+
+    #creating effects
+    e = Effect(value=3, token_id=t.id)
+    e2 = Effect(value=-4, token_id=t2.id)
+    db.session.add(e)
+    db.session.add(e2)
+    db.session.commit()
+
+    #changing values
+    t.value += e.value
+    t2.value += e2.value
+    db.session.add(t)
+    db.session.add(t2)
+    db.session.commit()
+
+    #getting tokens from db again  to ensure persistence of changes
+    t = db.session.query(Token).get(e.token_id)
+    t2 = db.session.query(Token).get(e2.token_id)
+
+    assert t.value == 3
+    assert t2.value == -4
 
 if __name__ == '__main__':
   unittest.main()
