@@ -3,20 +3,13 @@
 """
 TODO:
 Write tests for:
-User creation
-Poll creation
-Question creation
 Token creation
 Effect creation
 
-Adding several polls to a User
-Adding several users to a Poll
 Adding several questions to a Poll
 Adding several tokens to a Poll
 Adding several effects to a question
 
-Accessing a user's polls
-Accessing a poll's users
 Accessing a poll's questions
 Acessing a question's poll
 Accessing a poll's tokens
@@ -50,14 +43,19 @@ class ModelTests(unittest.TestCase):
     db.session.commit()
 
     #create test polls
-    p = Poll(name="test1 poll", admin=u.id)
-    p2 = Poll(name="test2 poll", admin=u2.id)
+    p = Poll(name="test1")
+    p.admins.append(u)
+    p2 = Poll(name="test2")
+    p2.admins.append(u2)
+    p3 = Poll(name="test3")
+    p3.admins.append(u)
+    p3.admins.append(u2)
+
     db.session.add(p)
     db.session.add(p2)
     db.session.commit()
 
     #register a user to a poll
-    u.polls.append(p)
     u.polls.append(p2)
     u2.polls.append(p2)
 
@@ -66,8 +64,12 @@ class ModelTests(unittest.TestCase):
 
     u = db.session.query(User).get(u.id)
     u2 = db.session.query(User).get(u2.id)
-    assert u.polls.count() == 2
-    assert db.session.query(u.polls).filter(Poll.admin=u.id)
+
+    assert u.polls_admin.count() == 2
+    assert p2 in u2.polls.all()
+    assert p in u.polls_admin.all()
+    assert u2.polls_admin.count() == 2
+    assert u.polls.count() + u.polls_admin.count() == 3
     assert u2.polls.count() == 1
 
 if __name__ == '__main__':
