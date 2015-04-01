@@ -10,9 +10,13 @@ To create a system where users may easily create polls which engage users in dee
 - Deployment on Heroku
 - Integration testing with Travis
 
-###Models and Relationships
+###Models and Relationships*
 
 <img src="https://s3.amazonaws.com/nighnight.com/assets/LPSchemeDesignV2.png" alt="Schema Design v2" style="width: 100%;"> 
+
+* token needs no longer has is_upperbound or is_lowerbound, and now has an int value.
+
+
 
 ###EndPoints
 **/api/user(?offset=0&limit=0)**
