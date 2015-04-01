@@ -33,7 +33,6 @@ class User(db.Model):
   Has a many-to-many relationship with Poll
   Has a many-to-many relationship with Poll as admin
   """
-  __tablename__ = 'user'
   id = db.Column(db.Integer, primary_key=True)
   email = db.Column(db.String(64), index=True, unique=True)
   password = db.Column(db.String(10))
@@ -61,13 +60,11 @@ class Poll(db.Model):
   Has a one-to-many relationship with Question
   Has a one-to-many relationship with Token
   """
-  __tablename__ = 'poll'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(65))
+  tokens = db.relationship('Token', backref='poll', lazy='dynamic')
   timestamp = db.Column(db.DateTime, server_default=db.func.now())
   questions = db.relationship('Question', backref='poll', lazy='dynamic')
-  tokens = db.relationship('Token', backref='poll', lazy='dynamic')
-  upperbound = db.Column(db.Integer, db.ForeignKey('token.id'))
   def __repr__(self):
     return "<Polls %r>" % (self.name)
 
@@ -82,7 +79,8 @@ class Question(db.Model):
   """
   id = db.Column(db.Integer, primary_key=True)
   text = db.Column(db.String(250))
-  effects = db.relationship('Effect', backref='question', lazy='dynamic')
+  poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
+  effects = db.relationship('Effect', backref='questions', lazy='dynamic')
 
   def __repr__(self):
     return "<Question %r>" % (self.text)
@@ -99,6 +97,7 @@ class Effect(db.Model):
   """
   id = db.Column(db.Integer, primary_key=True)
   value = db.Column(db.Integer)
+  question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
   token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
   def __repr__(self):
@@ -115,6 +114,7 @@ class Token(db.Model):
   Has a backrefernce to is parent poll as'poll'
   """
   id = db.Column(db.Integer, primary_key=True)
+  poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
   maximum = db.Column(db.Integer)
   minimum = db.Column(db.Integer)
   text = db.Column(db.String(100), unique=True)
