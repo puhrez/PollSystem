@@ -40,3 +40,12 @@ class ModelTests(unittest.TestCase):
   def tearDown(self):
     db.session.remove()
     db.drop_all()
+
+  def test_user_create(self):
+    u = User(email="test@example", name="John")
+  
+  def test_poll_create(self):
+  def test_question_create(self):
+  def test_token_create(self):
+  def test_effect_create(self):
+
