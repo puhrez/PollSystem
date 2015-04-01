@@ -9,3 +9,5 @@
 03/31/2015: 21:29 - merge model into api
 
 03/31/2015: 21:31 - began model_tests branch
+
+03/31/2015: 22:04 - doing research on unit testing and updated readme to reflect more accurate endpoints

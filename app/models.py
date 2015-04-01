@@ -1,4 +1,9 @@
 from app import db
+from datetime import datetime
+"""
+TODO:
+add as_dict() methods http://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json/11884806#11884806
+"""
 
 """
 This is our helper table to create the many-to-many relationship
@@ -47,7 +52,7 @@ class Poll(db.Model):
   __tablename__ = 'poll'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(65))
-  timestamp = db.Column(db.DateTime)
+  timestamp = db.Column(db.DateTime, server_default=db.func.now())
   questions = db.relationship('Question', backref='poll', lazy='dynamic')
   tokens = db.relationship('Token', backref='poll', lazy='dynamic')
 
