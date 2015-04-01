@@ -56,8 +56,8 @@ class Poll(db.Model):
     a set of questions
     a set of users (refered to from the users backref)
     a set of tokens
-  Has a many-to-many relationship with User
-  Has a many-to-many relationship with User as admin
+  Has a many-to-many relationship with User, backref is 'users'
+  Has a many-to-many relationship with User as admin, backref is 'admins'
   Has a one-to-many relationship with Question
   Has a one-to-many relationship with Token
   """
@@ -67,6 +67,7 @@ class Poll(db.Model):
   timestamp = db.Column(db.DateTime, server_default=db.func.now())
   questions = db.relationship('Question', backref='poll', lazy='dynamic')
   tokens = db.relationship('Token', backref='poll', lazy='dynamic')
+  upperbound = db.Column(db.Integer, db.ForeignKey('token.id'))
   def __repr__(self):
     return "<Polls %r>" % (self.name)
 
@@ -81,7 +82,6 @@ class Question(db.Model):
   """
   id = db.Column(db.Integer, primary_key=True)
   text = db.Column(db.String(250))
-  poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
   effects = db.relationship('Effect', backref='question', lazy='dynamic')
 
   def __repr__(self):
@@ -94,12 +94,11 @@ class Effect(db.Model):
     a unique id,
     a positive or negative value
     a token it affects
-  Has a refrence to its parent Question
+  Has a backref to its Question as 'question'
   Has a reference to its respective Token
   """
   id = db.Column(db.Integer, primary_key=True)
   value = db.Column(db.Integer)
-  question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
   token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
   def __repr__(self):
@@ -112,15 +111,10 @@ class Token(db.Model):
     a unique id,
     a maximum value,
     a minimum value,
-    whether it is an upperbound
-    whether it is a lowerbound
     a text which is the token
-  Has a reference to its parent poll
+  Has a backrefernce to is parent poll as'poll'
   """
   id = db.Column(db.Integer, primary_key=True)
-  poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
-  is_upperbound = db.Column(db.Boolean)
-  is_lowerbound = db.Column(db.Boolean)
   maximum = db.Column(db.Integer)
   minimum = db.Column(db.Integer)
   text = db.Column(db.String(100), unique=True)
