@@ -6,7 +6,7 @@ __pycache__/
 .Python
 flask/
 build/
-
+db_repository/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
