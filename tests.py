@@ -27,7 +27,7 @@ Accessing an effect's token
 
 import unittest
 from app.models import User, Poll, Token, Question, Effect
-from app import db
+from app import db, app
 
 class ModelTests(unittest.TestCase):
   def setUp(self):
@@ -41,14 +41,34 @@ class ModelTests(unittest.TestCase):
     db.session.remove()
     db.drop_all()
 
-  def test_user_create(self):
+  def test_poll_user_relationship(self):
+    # create test users
     u = User(email="test@example", name="John")
+    u2 = User(email="test2@example", name="Susan")
     db.session.add(u)
-    db.commit()
+    db.session.add(u2)
+    db.session.commit()
 
-  def test_poll_create(self):
-    p = Poll(name="test poll")
-  def test_question_create(self):
-  def test_token_create(self):
-  def test_effect_create(self):
+    #create test polls
+    p = Poll(name="test1 poll", admin=u.id)
+    p2 = Poll(name="test2 poll", admin=u2.id)
+    db.session.add(p)
+    db.session.add(p2)
+    db.session.commit()
 
+    #register a user to a poll
+    u.polls.append(p)
+    u.polls.append(p2)
+    u2.polls.append(p2)
+
+    db.session.add(u)
+    db.session.commit()
+
+    u = db.session.query(User).get(u.id)
+    u2 = db.session.query(User).get(u2.id)
+    assert u.polls.count() == 2
+    assert db.session.query(u.polls).filter(Poll.admin=u.id)
+    assert u2.polls.count() == 1
+
+if __name__ == '__main__':
+  unittest.main()

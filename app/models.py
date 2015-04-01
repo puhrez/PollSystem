@@ -14,6 +14,14 @@ memberships = db.Table('memberships',
   db.Column('poll_id', db.Integer, db.ForeignKey('poll.id'))
 )
 
+"""
+This is our helper table to create the many-to-many relationship
+between users and polls as administrators
+"""
+administrators = db.Table('administrators',
+  db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+  db.Column('poll_id', db.Integer, db.ForeignKey('poll.id'))
+)
 class User(db.Model):
   """
   This class represents a single user who has:
@@ -23,6 +31,7 @@ class User(db.Model):
     a name
     and a set of polls
   Has a many-to-many relationship with Poll
+  Has a many-to-many relationship with Poll as admin
   """
   __tablename__ = 'user'
   id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +40,8 @@ class User(db.Model):
   name = db.Column(db.String(64))
   polls = db.relationship('Poll', secondary=memberships, lazy='dynamic',
     backref=db.backref('users', lazy='dynamic'))
+  polls_admin = db.relationship('Poll', secondary=administrators, lazy='dynamic',
+    backref=db.backref('admins', lazy='dynamic'))
 
   def __repr__(self):
     #Prints out a string representing the user
@@ -46,10 +57,9 @@ class Poll(db.Model):
     a set of users (refered to from the users backref)
     a set of tokens
   Has a many-to-many relationship with User
+  Has a many-to-many relationship with User as admin
   Has a one-to-many relationship with Question
   Has a one-to-many relationship with Token
-  Has a reference to its admin user (to be filtered against to determine whether
-    user is admin)
   """
   __tablename__ = 'poll'
   id = db.Column(db.Integer, primary_key=True)
@@ -57,7 +67,6 @@ class Poll(db.Model):
   timestamp = db.Column(db.DateTime, server_default=db.func.now())
   questions = db.relationship('Question', backref='poll', lazy='dynamic')
   tokens = db.relationship('Token', backref='poll', lazy='dynamic')
-  admin = db.Column(db.Integer, db.ForeignKey('user.id'))
   def __repr__(self):
     return "<Polls %r>" % (self.name)
 
