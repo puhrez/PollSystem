@@ -77,7 +77,7 @@ class Effect(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   value = db.Column(db.Integer)
   question_id = db.Column(db.Integer, db.ForeignKey('questions.id'))
-  token = db.Column(db.Integer, db.ForeignKey('tokens.id'))
+  token_id = db.Column(db.Integer, db.ForeignKey('tokens.id'))
 
   def __repr__(self):
     return "<Effect %d on token-id %d>" % (self.value, self.token)
