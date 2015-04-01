@@ -72,5 +72,38 @@ class ModelTests(unittest.TestCase):
     assert u.polls.count() + u.polls_admin.count() == 3
     assert u2.polls.count() == 1
 
+  def test_poll_question_relationship(self):
+    #creating polls
+    p = Poll(name='test1')
+    p2 = Poll(name='test2')
+    db.session.add(p)
+    db.session.add(p2)
+    db.session.commit()
+
+    #creating questions
+    q = Question(text='question1')
+    q2 = Question(text='question2')
+    q3 = Question(text='question3')
+    q4 = Question(text='question4')
+
+    ##adding them to polls
+    p.questions.append(q)
+    p.questions.append(q2)
+    p.questions.append(q3)
+    p2.questions.append(q4)
+
+    db.session.add(p)
+    db.session.add(p2)
+    db.session.commit()
+
+    p = db.session.query(Poll).get(p.id)
+    p2 = db.session.query(Poll).get(p2.id)
+
+    assert p.questions.count() == 3
+    assert p2.questions.count() == 1
+    assert q in p.questions.all()
+    assert q4 not in p.questions.all()
+    assert q4 in p2.questions.all()
+
 if __name__ == '__main__':
   unittest.main()
