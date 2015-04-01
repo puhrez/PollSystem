@@ -108,7 +108,7 @@ class Token(db.Model):
   __tablename__ = 'token'
   __table_args__ = (
     UniqueConstraint('poll_id', 'text', name='poll_id_text_uix'),
-  )
+  ) # http://stackoverflow.com/questions/18677309/flask-sqlalchemy-relationship-error
   """
   This class represents a single token that has:
     a unique id,
@@ -119,6 +119,7 @@ class Token(db.Model):
   """
   id = db.Column(db.Integer, primary_key=True)
   poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
+  value = db.Column(db.Integer, default=0)
   maximum = db.Column(db.Integer)
   minimum = db.Column(db.Integer)
   text = db.Column(db.String(100), unique=True)
