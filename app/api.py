@@ -1,5 +1,6 @@
 from app import db, api
 from flask.ext.restful import reqparse, abort, Resource
+from .models import User, Poll, Token, Question, Effect
 
 class UserList(Resource):
   """
@@ -10,7 +11,7 @@ class UserList(Resource):
   def post(self):
     pass
 
-class UserSimple(Resource):
+class UserView(Resource):
   """
   This resource represents a single user
   """
@@ -30,7 +31,7 @@ class PollList(Resource):
   def post(self):
     pass
 
-class PollSimple(Resource):
+class PollView(Resource):
   """
   This resource represents a single Poll
   """
@@ -59,7 +60,7 @@ class QuestionList(Resource):
   def post(self):
     pass
 
-class QuestionSimple(Resource):
+class QuestionView(Resource):
   """
   This resource represents a single Question
   """
@@ -88,7 +89,7 @@ class TokenList(Resource):
   def post(self):
     pass
 
-class TokenSimple(Resource):
+class TokenView(Resource):
   """
   This resource represents a single Token
   """
@@ -117,7 +118,7 @@ class EffectList(Resource):
   def post(self):
     pass
 
-class EffectSimple(Resource):
+class EffectView(Resource):
   """
   This resource represents a specifc effects
   """
@@ -128,12 +129,12 @@ class EffectSimple(Resource):
   def delete(self, effect_id):
     pass
 
-#simple endpoints
-app.add_resource(QuestionSimple, '/api/questions/<string:question_id>')
-app.add_resource(TokenSimple, '/api/tokens/<string:token_id>')
-app.add_resource(PollSimple, '/api/polls/<string:poll_id>')
-app.add_resource(EffectSimple, '/api/effects/<string:effect_id>')
-app.add_resource(UserSimple, '/api/users/<string:user_id>')
+#View endpoints
+app.add_resource(QuestionView, '/api/questions/<string:question_id>')
+app.add_resource(TokenView, '/api/tokens/<string:token_id>')
+app.add_resource(PollView, '/api/polls/<string:poll_id>')
+app.add_resource(EffectView, '/api/effects/<string:effect_id>')
+app.add_resource(UserView, '/api/users/<string:user_id>')
 
 
 #collection endpoints

@@ -47,6 +47,9 @@ class User(db.Model):
     #Prints out a string representing the user
     return '<User %r>' % (self.name)
 
+  def as_dict(self):
+    return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
+
 class Poll(db.Model):
   """
   This class represents a single poll which has:
@@ -66,8 +69,12 @@ class Poll(db.Model):
   tokens = db.relationship('Token', backref='poll', lazy='dynamic')
   timestamp = db.Column(db.DateTime, server_default=db.func.now())
   questions = db.relationship('Question', backref='poll', lazy='dynamic')
+
   def __repr__(self):
     return "<Polls %r>" % (self.name)
+  def as_dict(self):
+    return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
+
 
 class Question(db.Model):
   __tablename__ = 'question'
@@ -85,6 +92,9 @@ class Question(db.Model):
 
   def __repr__(self):
     return "<Question %r>" % (self.text)
+  def as_dict(self):
+    return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
+
 
 class Effect(db.Model):
   __tablename__ = 'effect'
@@ -103,6 +113,9 @@ class Effect(db.Model):
 
   def __repr__(self):
     return "<Effect %d on token-id %d>" % (self.value, self.token)
+  def as_dict(self):
+    return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
+
 
 class Token(db.Model):
   __tablename__ = 'token'
@@ -123,4 +136,9 @@ class Token(db.Model):
   maximum = db.Column(db.Integer)
   minimum = db.Column(db.Integer)
   text = db.Column(db.String(100), unique=True)
+
+  def as_dict(self):
+    return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
+  def __repr__(self):
+    return "<Token id %d>" % (self.value, self.token)
 
