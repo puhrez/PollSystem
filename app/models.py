@@ -1,7 +1,7 @@
 from app import db
 from sqlalchemy.schema import UniqueConstraint
 import bcrypt
-
+from mixins import ModelMixin
 """
 This is our helper table to create the many-to-many relationship
 between users and polls
@@ -23,18 +23,7 @@ administrators = db.Table(
 )
 
 
-class MyMixin(object):
-    """
-    Mixin class for shared functions
-    """
-    def as_dict(self):
-        """
-        returns the object as a dictionary
-        """
-        return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
-
-
-class User(db.Model, MyMixin):
+class User(db.Model, ModelMixin):
     """
       This class represents a single user who has:
         a unique id,
@@ -74,7 +63,7 @@ class User(db.Model, MyMixin):
         return '<User %r>' % (self.name)
 
 
-class Poll(db.Model, MyMixin):
+class Poll(db.Model, ModelMixin):
     """
       This class represents a single poll which has:
         a unique id,
@@ -98,7 +87,7 @@ class Poll(db.Model, MyMixin):
         return "<Polls %r>" % (self.name)
 
 
-class Question(db.Model, MyMixin):
+class Question(db.Model, ModelMixin):
     __tablename__ = 'question'
     """
   This class represents a single question which has:
@@ -116,7 +105,7 @@ class Question(db.Model, MyMixin):
         return "<Question %r>" % (self.text)
 
 
-class Effect(db.Model, MyMixin):
+class Effect(db.Model, ModelMixin):
     __tablename__ = 'effect'
     """
     This class represents a single effect that a question has on a token:
@@ -135,7 +124,7 @@ class Effect(db.Model, MyMixin):
         return "<Effect %d on token-id %d>" % (self.value, self.token)
 
 
-class Token(db.Model, MyMixin):
+class Token(db.Model, ModelMixin):
     __tablename__ = 'token'
     __table_args__ = (
         UniqueConstraint('poll_id', 'text', name='poll_id_text_uix'),
