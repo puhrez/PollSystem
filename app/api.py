@@ -10,7 +10,7 @@ class UserList(Resource):
   def post(self):
     pass
 
-class User(Resource):
+class UserSimple(Resource):
   """
   This resource represents a single user
   """
@@ -30,7 +30,7 @@ class PollList(Resource):
   def post(self):
     pass
 
-class Poll(Resource):
+class PollSimple(Resource):
   """
   This resource represents a single Poll
   """
@@ -59,7 +59,7 @@ class QuestionList(Resource):
   def post(self):
     pass
 
-class Question(Resource):
+class QuestionSimple(Resource):
   """
   This resource represents a single Question
   """
@@ -88,7 +88,7 @@ class TokenList(Resource):
   def post(self):
     pass
 
-class Token(Resource):
+class TokenSimple(Resource):
   """
   This resource represents a single Token
   """
@@ -117,7 +117,7 @@ class EffectList(Resource):
   def post(self):
     pass
 
-class Effect(Resource):
+class EffectSimple(Resource):
   """
   This resource represents a specifc effects
   """
@@ -128,3 +128,25 @@ class Effect(Resource):
   def delete(self, effect_id):
     pass
 
+#simple endpoints
+app.add_resource(QuestionSimple, '/api/questions/<string:question_id>')
+app.add_resource(TokenSimple, '/api/tokens/<string:token_id>')
+app.add_resource(PollSimple, '/api/polls/<string:poll_id>')
+app.add_resource(EffectSimple, '/api/effects/<string:effect_id>')
+app.add_resource(UserSimple, '/api/users/<string:user_id>')
+
+
+#collection endpoints
+app.add_resource(QuestionList, '/api/questions')
+app.add_resource(TokenList, '/api/tokens')
+app.add_resource(PollList, '/api/polls')
+app.add_resource(EffectList, '/api/effects')
+app.add_resource(UserList, '/api/users')
+
+
+
+#specific collection endpoints
+
+app.add_resource(TokenPollList, '/api/polls/<string:poll_id>/<string:question_id>')
+app.add_resource(QuestionPollList, '/api/polls/<string:poll_id>/<string:token_id>')
+app.add_resource(EffectQuestionList, '/api/polls/<string:poll_id>/<string:token_id>')
