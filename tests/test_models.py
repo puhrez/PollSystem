@@ -1,16 +1,3 @@
-#!flask/bin/python
-
-"""
-TODO:
-Write tests for:
-Effect creation
-
-Adding several effects to a question
-
-Accessing a question's effects
-Accessing an effect's token
-"""
-
 import unittest
 from app.models import User, Poll, Token, Question, Effect
 from app import db, app
@@ -186,5 +173,3 @@ class ModelTests(unittest.TestCase):
     assert t.value == 3
     assert t2.value == -4
 
-if __name__ == '__main__':
-  unittest.main()
