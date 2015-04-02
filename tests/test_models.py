@@ -1,8 +1,9 @@
-import unittest
-from app.models import User, Poll, Token, Question, Effect
+import nose
+from nose.tools import *
+from app.models import *
 from app import db, app
 
-class ModelTests(unittest.TestCase):
+class test_models():
   def setUp(self):
     app.config['TESTING'] = True
     app.config['WTF_CSRF_ENABLED'] = False
