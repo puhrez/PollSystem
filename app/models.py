@@ -137,16 +137,17 @@ class Token(db.Model, ModelMixin):
     a minimum value,
     a text which is the token
     Has a backrefernce to is parent poll as'poll'
+    UniqueConstraint -> only one token of a certain name per poll
     """
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
     value = db.Column(db.Integer, default=0)
     maximum = db.Column(db.Integer)
     minimum = db.Column(db.Integer)
-    text = db.Column(db.String(100), unique=True)
+    text = db.Column(db.String(100))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
 
     def __repr__(self):
-        return "<Token id %d>" % (self.value, self.token)
+        return "<Token id %d>" % (self.id)
