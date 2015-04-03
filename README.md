@@ -1,5 +1,9 @@
 #Engagement Polling System
 
+###Testing
+to test: run nosetests
+
+
 ###Objective
 To create a system where users may easily create polls which engage users in deep thinking about issues and measures where priorities lie in regard to those issues.
 
