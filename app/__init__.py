@@ -7,4 +7,4 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 api = Api(app)
 
-from app.views import api
+from app import views, models
