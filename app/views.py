@@ -1,8 +1,10 @@
 from app import api
-from resources import UserView, UserList
-from resources import EffectView, EffectList, EffectQuestionList
-from resources import TokenView, TokenList, TokenPollList, PollView, PollList
-from resources import QuestionPollList, QuestionList, QuestionView
+from resources.res_users import UserView, UserList
+from resources.res_effects import EffectView, EffectList, EffectQuestionList
+from resources.res_tokens import TokenView, TokenList, TokenPollList
+from resources.res_polls import PollView, PollList
+from resources.res_questions import QuestionPollList, QuestionView
+from resources.res_questions import QuestionList
 
 """
 View endpoints
@@ -21,7 +23,6 @@ api.add_resource(TokenList, '/api/tokens')
 api.add_resource(PollList, '/api/polls')
 api.add_resource(EffectList, '/api/effects')
 api.add_resource(UserList, '/api/users')
-api
 """
 specific collection endpoints
 """

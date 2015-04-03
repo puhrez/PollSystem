@@ -1,11 +1,11 @@
 from app import db
 from flask.ext.restful import reqparse, Resource
 from app.models import User
-from sql.alchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError
 userparser = reqparse.RequestParser()
-userparser.add_arguement('name', type=str, required=True)
-userparser.add_arguement('email', type=str, required=True)
-userparser.add_arguement('password', type=str, required=True)
+userparser.add_argument('name', type=str, required=True)
+userparser.add_argument('email', type=str, required=True)
+userparser.add_argument('password', type=str, required=True)
 
 
 class UserList(Resource):
@@ -18,11 +18,12 @@ class UserList(Resource):
     }
 
     def get(self):
+        print "hit list get"
         users = User.query.all()
-        if users is not None:
-            return users.as_dict()
-        else:
-            return {}, 404
+        results = []
+        for user in users:
+            results.append(user.as_dict())
+        return results
 
     def post(self):
         args = userparser.parse_args()
@@ -31,14 +32,12 @@ class UserList(Resource):
             email=args['email'],
             password=args['password']
         )
-
         try:
             db.session.add(user)
             db.session.commit()
         except IntegrityError, exc:
             return {"error": exc.message}, 500
-
-        return user.as_dict, 201
+        return user.as_dict(), 201
 
 
 class UserView(Resource):

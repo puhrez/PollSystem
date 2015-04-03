@@ -34,7 +34,7 @@ class User(db.Model, ModelMixin):
       Has a many-to-many relationship with Poll
       Has a many-to-many relationship with Poll as admin
     """
-
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(250))
@@ -77,6 +77,7 @@ class Poll(db.Model, ModelMixin):
       Has a one-to-many relationship with Question
       Has a one-to-many relationship with Token
     """
+    __tablename__ = "poll"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(65))
     tokens = db.relationship('Token', backref='poll', lazy='dynamic')
@@ -88,14 +89,14 @@ class Poll(db.Model, ModelMixin):
 
 
 class Question(db.Model, ModelMixin):
-    __tablename__ = 'question'
     """
-  This class represents a single question which has:
-    a unique id,
-    a string, text, which is the question itself
-    a set of effects
-  Has a one-to-many relatinoship with Effect
-  """
+      This class represents a single question which has:
+        a unique id,
+        a string, text, which is the question itself
+        a set of effects
+      Has a one-to-many relatinoship with Effect
+    """
+    __tablename__ = 'question'
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(250))
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
