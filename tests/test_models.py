@@ -1,19 +1,9 @@
-import nose
-from nose.tools import *
-from app.models import *
+from app.models import Poll, User, Token, Question, Effect
 from app import db
-from tests import test_app
+from app.mixins import TestMixin
 
 
-class TestModels():
-    def setup(self):
-        self.app = test_app
-        db.create_all()
-
-    def teardown(self):
-        db.session.remove()
-        db.drop_all()
-
+class TestModels(TestMixin):
     def test_poll_user_relationship(self):
         # create test users
         u = User(email="test@example", name="John", password="ppp")
