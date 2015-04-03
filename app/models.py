@@ -1,6 +1,7 @@
 from app import db
 from sqlalchemy.schema import UniqueConstraint
-
+import bcrypt
+from mixins import ModelMixin
 """
 This is our helper table to create the many-to-many relationship
 between users and polls
@@ -22,7 +23,7 @@ administrators = db.Table(
 )
 
 
-class User(db.Model):
+class User(db.Model, ModelMixin):
     """
       This class represents a single user who has:
         a unique id,
@@ -33,10 +34,10 @@ class User(db.Model):
       Has a many-to-many relationship with Poll
       Has a many-to-many relationship with Poll as admin
     """
-
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True)
-    password = db.Column(db.String(10))
+    password = db.Column(db.String(250))
     name = db.Column(db.String(64))
     polls = db.relationship(
         'Poll', secondary=memberships, lazy='dynamic',
@@ -47,20 +48,22 @@ class User(db.Model):
         backref=db.backref('admins', lazy='dynamic')
     )
 
+    def __init__(self, name, password, email):
+        self.name = name
+        self.password = bcrypt.hashpw(password, bcrypt.gensalt(10))
+        self.email = email
+
+    def password_match(self, password):
+        return bcrypt.hashpw(password, self.password) == self.password
+
     def __repr__(self):
         """
         Prints out a string representing the user
         """
         return '<User %r>' % (self.name)
 
-    def as_dict(self):
-        """
-        returns the object as a dictionary
-        """
-        return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
 
-
-class Poll(db.Model):
+class Poll(db.Model, ModelMixin):
     """
       This class represents a single poll which has:
         a unique id,
@@ -74,6 +77,7 @@ class Poll(db.Model):
       Has a one-to-many relationship with Question
       Has a one-to-many relationship with Token
     """
+    __tablename__ = "poll"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(65))
     tokens = db.relationship('Token', backref='poll', lazy='dynamic')
@@ -83,19 +87,16 @@ class Poll(db.Model):
     def __repr__(self):
         return "<Polls %r>" % (self.name)
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
 
-
-class Question(db.Model):
-    __tablename__ = 'question'
+class Question(db.Model, ModelMixin):
     """
-  This class represents a single question which has:
-    a unique id,
-    a string, text, which is the question itself
-    a set of effects
-  Has a one-to-many relatinoship with Effect
-  """
+      This class represents a single question which has:
+        a unique id,
+        a string, text, which is the question itself
+        a set of effects
+      Has a one-to-many relatinoship with Effect
+    """
+    __tablename__ = 'question'
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(250))
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
@@ -104,11 +105,8 @@ class Question(db.Model):
     def __repr__(self):
         return "<Question %r>" % (self.text)
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
 
-
-class Effect(db.Model):
+class Effect(db.Model, ModelMixin):
     __tablename__ = 'effect'
     """
     This class represents a single effect that a question has on a token:
@@ -126,11 +124,8 @@ class Effect(db.Model):
     def __repr__(self):
         return "<Effect %d on token-id %d>" % (self.value, self.token)
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
 
-
-class Token(db.Model):
+class Token(db.Model, ModelMixin):
     __tablename__ = 'token'
     __table_args__ = (
         UniqueConstraint('poll_id', 'text', name='poll_id_text_uix'),

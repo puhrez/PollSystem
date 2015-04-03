@@ -16,8 +16,8 @@ class TestModels():
 
     def test_poll_user_relationship(self):
         # create test users
-        u = User(email="test@example", name="John")
-        u2 = User(email="test2@example", name="Susan")
+        u = User(email="test@example", name="John", password="ppp")
+        u2 = User(email="test2@example", name="Susan", password="ppp")
         db.session.add(u)
         db.session.add(u2)
         db.session.commit()

@@ -1,164 +1,11 @@
-from app import db, api, app
-from flask.ext.restful import reqparse, abort, Resource
-from .models import User, Poll, Token, Question, Effect
+from app import api
+from resources.res_users import UserView, UserList
+from resources.res_effects import EffectView, EffectList, EffectQuestionList
+from resources.res_tokens import TokenView, TokenList, TokenPollList
+from resources.res_polls import PollView, PollList
+from resources.res_questions import QuestionPollList, QuestionView
+from resources.res_questions import QuestionList
 
-
-class UserList(Resource):
-    """
-    This resource represents the collection of all users
-    """
-    def get(self):
-        pass
-
-    def post(self):
-        pass
-
-
-class UserView(Resource):
-    """
-    This resource represents a single user
-    """
-    def get(self, user_id):
-        pass
-
-    def put(self, user_id):
-        pass
-
-    def delete(self, user_id):
-        pass
-
-
-class PollList(Resource):
-    """
-    This resource represents the collection of all Polls
-    """
-    def get(self):
-        pass
-
-    def post(self):
-        pass
-
-
-class PollView(Resource):
-    """
-    This resource represents a single Poll
-    """
-    def get(self, poll_id):
-        pass
-
-    def put(self, poll_id):
-        pass
-
-    def delete(self, poll_id):
-        pass
-
-
-class QuestionPollList(Resource):
-    """
-    This resource represents the collection of Questions for a specific Poll
-    """
-    def get(self, poll_id):
-        pass
-
-    def post(self, poll_id):
-        pass
-
-
-class QuestionList(Resource):
-    """
-    This resource represents the collection of Questions
-    """
-    def get(self):
-        pass
-
-    def post(self):
-        pass
-
-
-class QuestionView(Resource):
-    """
-    This resource represents a single Question
-    """
-    def get(self, question_id):
-        pass
-
-    def put(self, question_id):
-        pass
-
-    def delete(self, question_id):
-        pass
-
-
-class TokenPollList(Resource):
-    """
-    This resource represents the collection of Tokens for a specific Poll
-    """
-    def get(self, poll_id):
-        pass
-
-    def post(self, poll_id):
-        pass
-
-
-class TokenList(Resource):
-    """
-    This resource represents the collection of Tokens
-    """
-    def get(self):
-        pass
-
-    def post(self):
-        pass
-
-
-class TokenView(Resource):
-    """
-    This resource represents a single Token
-    """
-    def get(self, token_id):
-        pass
-
-    def put(self, token_id):
-        pass
-
-    def delete(self, token_id):
-        pass
-
-
-class EffectQuestionList(Resource):
-    """
-    This resource represents a collection of effects for a specific question
-    """
-    def get(self, question_id):
-        pass
-
-    def post(self, question_id):
-        pass
-
-
-class EffectList(Resource):
-    """
-    This resource represents the collection of effects
-    """
-    def get(self):
-        pass
-
-    def post(self):
-        pass
-
-
-class EffectView(Resource):
-    """
-    This resource represents a specifc effects
-    """
-    def get(self, effect_id):
-        pass
-
-    def put(self, effect_id):
-        pass
-
-    def delete(self, effect_id):
-        pass
 """
 View endpoints
 """
@@ -176,7 +23,6 @@ api.add_resource(TokenList, '/api/tokens')
 api.add_resource(PollList, '/api/polls')
 api.add_resource(EffectList, '/api/effects')
 api.add_resource(UserList, '/api/users')
-api
 """
 specific collection endpoints
 """
