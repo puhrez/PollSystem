@@ -28,7 +28,7 @@ To create a system where users may easily create polls which engage users in dee
 * GET - Retrieves all users starting from the record at offset + 1, only taking to limit
 * POST - Creates a new user
 
-**/api/user/<userid>(?fields=\**kwargs)**
+**/api/user/<userid>**
 
 * GET - Retrieves the information for user with id userid
 * PUT - Updates the user's information
@@ -39,29 +39,42 @@ To create a system where users may easily create polls which engage users in dee
 * GET - Retrieves all polls starting from the record at offset + 1, only taking o limit
 * POST - Creates a new poll
 
-**/api/polls/<pollid>(?fields=\**kwargs)**
+**/api/polls/<pollid>**
 
 * GET - Retrieve the information for poll with id pollid
 * PUT - Update the poll's information
 * DELETE - Deletes the Poll
 
+**/api/polls/<pollid>/tokens**
+
+* GET - Get all the tokens for poll of pollid
+* POST - Creates a new token for poll of pollid
+
+**/api/polls/<pollid>/questions**
+
+* GET - Get all the questions for poll of pollid
+* POST - Creates a new question for poll of pollid
+
 **/api/questions(?offset=0&limit=0)**
 
 * GET - Retrieves all questions starting from the record at offset + 1, only taking to limit
-* POST - Creates a new question
 
-**/api/questions/<questionid>(?fields=\**kwargs)**
+**/api/questions/<questionid>**
 
 * GET - Retrieves the information for user with id questionid
 * PUT - Updates the question's information
 * DELETE - Deletes the question
 
+**/api/questions/<questionid>/effects**
+
+* GET - Get all the effects for question of questionid
+* POST - Creates a new effect for question of questionid
+
 **/api/effects(?offset=0&limit=0)**
 
 * GET - Retrieves all effects starting from the record at offset + 1, only taking to limit
-* POST - Creates a new effects
 
-**/api/effects/<effectsid>(?fields=\**kwargs)**
+**/api/effects/<effectsid>**
 
 * GET - Retrieves the information for effect with id effectid
 * PUT - Updates the effect information
@@ -70,9 +83,8 @@ To create a system where users may easily create polls which engage users in dee
 **/api/tokens(?offset=0&limit=0)**
 
 * GET - Retrieves all tokens starting from the record at offset + 1, only taking to limit
-* POST - Creates a new tokens
 
-**/api/tokens/<tokensid>(?fields=\**kwargs)**
+**/api/tokens/<tokensid>**
 
 * GET - Retrieves the information for token with id tokenid
 * PUT - Updates the token's information
