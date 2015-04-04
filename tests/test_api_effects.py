@@ -73,7 +73,8 @@ class TestEffectApi(TestMixin):
         # check raw.data
         resp = json.loads(raw.data)
         eq_(resp["value"], resource.value)
-        eq_(resp["value"], resource.value)
+        eq_(resp["question_id"], resource.question_id)
+        eq_(resp["token_id"], resource.token_id)
 
         # check raw from poll endpoint
         raw = test_app.get(question_endpoint)
@@ -113,4 +114,7 @@ class TestEffectApi(TestMixin):
         self.check_content_type(raw.headers)
         resp = json.loads(raw.data)
         # check each field
-        eq_(resp['text'], resource.text)
+        eq_(resp["value"], resource.value)
+        eq_(resp["question_id"], resource.question_id)
+
+        eq_(resp["token_id"], resource.token_id)

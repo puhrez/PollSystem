@@ -111,6 +111,9 @@ class Question(db.Model, ModelMixin):
 
 class Effect(db.Model, ModelMixin):
     __tablename__ = 'effect'
+    __table_args__ = (
+        UniqueConstraint('question_id', 'token_id', name='question_id_token'),
+    )
     """
     This class represents a single effect that a question has on a token:
     a unique id,
