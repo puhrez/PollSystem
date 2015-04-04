@@ -34,4 +34,4 @@ api.add_resource(
     '/api/polls/<string:poll_id>/questions')
 api.add_resource(
     EffectQuestionList,
-    '/api/polls/<string:poll_id>/effects')
+    '/api/questions/<string:question_id>/effects')

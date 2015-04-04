@@ -6,7 +6,7 @@ from app.mixins import TestMixin
 from app import db
 
 
-class TestUserApi(TestMixin):
+class TestTokenApi(TestMixin):
     endpoint = '/api/tokens'
 
     def setup(self):
