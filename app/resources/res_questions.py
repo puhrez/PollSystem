@@ -2,22 +2,13 @@ from app import db
 from flask.ext.restful import reqparse, Resource
 from app.models import Question, Poll
 from sqlalchemy.exc import IntegrityError
+from .res_errors import not_found
 questionparser = reqparse.RequestParser()
 questionparser.add_argument('text', type=str, required=True)
 questionparser.add_argument('poll_id', type=int, required=True)
 
 
 class QuestionList(Resource):
-    error_msg = {
-        "poll": {
-            "404":
-            {"error": "Poll not found"}
-        },
-        "question": {
-            "404":
-            {"error": "Question not found"}
-        }
-    }
     """
     This resource represents the collection of Questions
     """
@@ -43,7 +34,7 @@ class QuestionPollList(Resource):
             print 'from specific list view', results
             return results
         else:
-            return self.error_msg["poll"]["404"], 404
+            return not_found("Poll %d" % poll_id), 404
 
     def post(self, poll_id):
         args = questionparser.parse_args()
@@ -68,7 +59,7 @@ class QuestionView(Resource):
         if question is not None:
             return question.as_dict()
         else:
-            return self.error_msg["question"]["404"], 404
+            return not_found("Question %d" % question_id), 404
 
     def put(self, question_id):
         args = questionparser.parse_args()
@@ -79,7 +70,7 @@ class QuestionView(Resource):
             db.session.commit()
             return question.as_dict(), 404
         else:
-            return self.error_msg["question"]["404"], 404
+            return not_found("Question %d" % question_id), 404
 
     def delete(self, question_id):
         question = Question.query.get(question_id)
@@ -88,4 +79,4 @@ class QuestionView(Resource):
             db.session.commit()
             return {}, 200
         else:
-            return self.error_msg['question']['404'], 404
+            return not_found("Question %d" % question_id), 404

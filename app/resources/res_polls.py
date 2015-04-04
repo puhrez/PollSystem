@@ -2,6 +2,7 @@ from app import db
 from flask.ext.restful import reqparse, Resource, fields, marshal_with
 from app.models import Poll
 from sqlalchemy.exc import IntegrityError
+from .res_errors import not_found
 pollparser = reqparse.RequestParser()
 pollparser.add_argument('name', type=str, required=True)
 resource_fields = {
@@ -15,10 +16,6 @@ class PollList(Resource):
     """
     This resource represents the collection of all Polls
     """
-    error_msg = {
-        "404":
-        {"error": "Poll not found"}
-    }
 
     @marshal_with(resource_fields)
     def get(self):
@@ -51,7 +48,7 @@ class PollView(Resource):
         if poll is not None:
             return poll.as_dict()
         else:
-            return self.error_msg['404'], 404
+            return not_found("Poll %d" % poll_id), 404
 
     def put(self, poll_id):
         """
@@ -63,7 +60,7 @@ class PollView(Resource):
             poll.name = args['name']
             db.session.commit()
         else:
-            return self.error_msg['404'], 404
+            return not_found("Poll %d" % poll_id), 404
 
     def delete(self, poll_id):
         poll = Poll.query.get(poll_id)
@@ -72,4 +69,4 @@ class PollView(Resource):
             db.session.commit()
             return {}, 200
         else:
-            return self.error_msg['404'], 404
+            return not_found("Poll %d" % poll_id), 404

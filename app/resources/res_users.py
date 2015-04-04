@@ -3,6 +3,7 @@ from flask.ext.restful import reqparse, Resource
 from app.models import User
 from sqlalchemy.exc import IntegrityError
 import bcrypt
+from .res_errors import not_found
 userparser = reqparse.RequestParser()
 userparser.add_argument('name', type=str, required=True)
 userparser.add_argument('email', type=str, required=True)
@@ -13,10 +14,6 @@ class UserList(Resource):
     """
     This resource represents the collection of all users
     """
-    error_msg = {
-        "404":
-        {"error": "User not found"}
-    }
 
     def get(self):
         print "hit list get"
@@ -50,7 +47,7 @@ class UserView(Resource):
         if user is not None:
             return user.as_dict()
         else:
-            return self.error_msg['404'], 404
+            return not_found("User %d" % user_id), 404
 
     def put(self, user_id):
         """
@@ -65,7 +62,7 @@ class UserView(Resource):
             db.session.commit()
             return user.as_dict()
         else:
-            return self.error_msg['404'], 404
+            return not_found("User %d" % user_id), 404
 
     def delete(self, user_id):
         user = User.query.get(user_id)
@@ -74,4 +71,4 @@ class UserView(Resource):
             db.session.commit()
             return {}, 200
         else:
-            return self.error_msg['404'], 404
+            return not_found("User %d" % user_id), 404

@@ -2,6 +2,12 @@ from app import db
 from flask.ext.restful import reqparse, Resource
 from app.models import Token
 from sqlalchemy.exc import IntegrityError
+tokenparser = reqparse.RequestParser()
+tokenparser.add_argument('value', type=int, required=True)
+tokenparser.add_argument('maximum', type=int, required=True)
+tokenparser.add_argument('minimum', type=int, required=True)
+tokenparser.add_argument('poll_id', type=int, required=True)
+tokenparser.add_argument('text', type=str, required=True)
 
 
 class TokenPollList(Resource):
