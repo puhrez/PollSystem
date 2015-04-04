@@ -31,7 +31,6 @@ class QuestionPollList(Resource):
             results = []
             for question in questions:
                 results.append(question.as_dict())
-            print 'from specific list view', results
             return results
         else:
             return not_found("Poll %d" % poll_id), 404
@@ -68,7 +67,7 @@ class QuestionView(Resource):
             question.text = args['text']
             question.poll_id = args['poll_id']
             db.session.commit()
-            return question.as_dict(), 404
+            return question.as_dict(), 200
         else:
             return not_found("Question %d" % question_id), 404
 
