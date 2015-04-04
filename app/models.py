@@ -149,8 +149,5 @@ class Token(db.Model, ModelMixin):
     minimum = db.Column(db.Integer)
     text = db.Column(db.String(100))
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
-
     def __repr__(self):
         return "<Token id %d>" % (self.id)

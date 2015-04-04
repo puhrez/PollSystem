@@ -2,7 +2,6 @@ from app import db
 from flask.ext.restful import reqparse, Resource
 from app.models import Question, Poll
 from sqlalchemy.exc import IntegrityError
-from flask import jsonify
 questionparser = reqparse.RequestParser()
 questionparser.add_argument('text', type=str, required=True)
 questionparser.add_argument('poll_id', type=int, required=True)
