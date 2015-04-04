@@ -1,6 +1,6 @@
 import json
 from nose.tools import eq_
-from app.models import Question, Effect
+from app.models import Question, Effect, Poll, Token
 from tests import test_app
 from app.mixins import TestMixin
 from app import db
@@ -22,13 +22,23 @@ class TestEffectApi(TestMixin):
         eq_(len(resp), 0)
 
     def test_duplicate_post(self):
-        question = Question(text="question test")
+        poll = Poll(name="poll test")
+        question = Question(text="question test", poll_id=poll.id)
+        token = Token(
+            text='token',
+            value=0,
+            maximum=50,
+            minimum=-50,
+            poll_id=poll.id
+        )
+        db.session.add(poll)
         db.session.add(question)
+        db.session.add(token)
         db.session.commit()
         question_endpoint = ('/api/questions/%d/effects' % question.id)
-        resource = Effect(value=5, question_id=question.id)
+        resource = Effect(value=5, question_id=question.id, token_id=token.id)
 
-        # make a question
+        # make a effect
         raw = test_app.post(question_endpoint, data=resource.as_dict())
         self.check_content_type(raw.headers)
         eq_(raw.status_code, 201)
@@ -39,11 +49,21 @@ class TestEffectApi(TestMixin):
         eq_(raw.status_code, 500)
 
     def test_post(self):
-        question = Question(text="question test")
+        poll = Poll(name="poll test")
+        question = Question(text="question test", poll_id=poll.id)
+        token = Token(
+            text='token',
+            value=0,
+            maximum=50,
+            minimum=-50,
+            poll_id=poll.id
+        )
+        db.session.add(poll)
         db.session.add(question)
+        db.session.add(token)
         db.session.commit()
         question_endpoint = ('/api/questions/%d/effects' % question.id)
-        resource = Effect(value=5, question_id=question.id)
+        resource = Effect(value=5, question_id=question.id, token_id=token.id)
 
         # make a questions
         raw = test_app.post(question_endpoint, data=resource.as_dict())
@@ -52,7 +72,8 @@ class TestEffectApi(TestMixin):
         eq_(raw.status_code, 201)
         # check raw.data
         resp = json.loads(raw.data)
-        eq_(resp["text"], resource.text)
+        eq_(resp["value"], resource.value)
+        eq_(resp["value"], resource.value)
 
         # check raw from poll endpoint
         raw = test_app.get(question_endpoint)
@@ -65,11 +86,21 @@ class TestEffectApi(TestMixin):
         eq_(len(resp), 1)
 
     def test_get_id(self):
-        question = Question(text="question test")
+        poll = Poll(name="poll test")
+        question = Question(text="question test", poll_id=poll.id)
+        token = Token(
+            text='token',
+            value=0,
+            maximum=50,
+            minimum=-50,
+            poll_id=poll.id
+        )
+        db.session.add(poll)
         db.session.add(question)
+        db.session.add(token)
         db.session.commit()
         question_endpoint = ('/api/questions/%d/effects' % question.id)
-        resource = Effect(value=5, question_id=question.id)
+        resource = Effect(value=5, question_id=question.id, token_id=token.id)
 
         # make a question
         raw = test_app.post(question_endpoint, data=resource.as_dict())
