@@ -7,14 +7,10 @@ from app import db
 
 
 class TestUserApi(TestMixin):
-    poll = Poll(name="poll test")
-    resource = Question(text="question", poll_id=poll.id)
     endpoint = '/api/questions'
 
     def setup(self):
         db.create_all()
-        db.session.add(self.poll)
-        db.session.commit()
 
     def test_get_empty(self):
         raw = test_app.get(self.endpoint)
@@ -26,28 +22,40 @@ class TestUserApi(TestMixin):
         eq_(len(resp), 0)
 
     def test_duplicate_post(self):
+        poll = Poll(name="poll test")
+        db.session.add(poll)
+        db.session.commit()
+        poll_endpoint = ('/api/polls/%d/questions' % poll.id)
+        resource = Question(text="question", poll_id=poll.id)
+
         # make a question
-        raw = test_app.post(self.poll_endpoint, data=self.resource.as_dict())
+        raw = test_app.post(poll_endpoint, data=resource.as_dict())
         self.check_content_type(raw.headers)
         eq_(raw.status_code, 201)
 
         # try to resubmit
-        raw = test_app.post(self.poll_endpoint, data=self.resource.as_dict())
+        raw = test_app.post(poll_endpoint, data=resource.as_dict())
         self.check_content_type(raw.headers)
         eq_(raw.status_code, 500)
 
     def test_post(self):
-        # make a question
-        raw = test_app.post(self.poll_endpoint, data=self.resource.as_dict())
+        poll = Poll(name="poll test")
+        db.session.add(poll)
+        db.session.commit()
+        poll_endpoint = ('/api/polls/%d/questions' % poll.id)
+        resource = Question(text="question", poll_id=poll.id)
+
+        # make a questions
+        raw = test_app.post(poll_endpoint, data=resource.as_dict())
         self.check_content_type(raw.headers)
         eq_(raw.status_code, 201)
 
         # check raw.data
         resp = json.loads(raw.data)
-        eq_(resp["text"], self.resource.text)
+        eq_(resp["text"], resource.text)
 
-        # check raw
-        raw = test_app.get(self.poll_endpoint)
+        # check raw from poll endpoint
+        raw = test_app.get(poll_endpoint)
         self.check_content_type(raw.headers)
         resp = json.loads(raw.data)
 
@@ -57,11 +65,16 @@ class TestUserApi(TestMixin):
         eq_(len(resp), 1)
 
     def test_get_id(self):
+        poll = Poll(name="poll test")
+        db.session.add(poll)
+        db.session.commit()
+        poll_endpoint = ('/api/polls/%d/questions' % poll.id)
+        resource = Question(text="question", poll_id=poll.id)
+
         # make a question
-        raw = test_app.post(self.poll_endpoint, data=self.resource.as_dict())
+        raw = test_app.post(poll_endpoint, data=resource.as_dict())
         self.check_content_type(raw.headers)
         eq_(raw.status_code, 201)
-
         # check raw.data
         resp = json.loads(raw.data)
         # get a specific question
@@ -69,4 +82,4 @@ class TestUserApi(TestMixin):
         self.check_content_type(raw.headers)
         resp = json.loads(raw.data)
         # check each field
-        eq_(resp['text'], self.resource.text)
+        eq_(resp['text'], resource.text)

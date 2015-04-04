@@ -28,10 +28,10 @@ specific collection endpoints
 """
 api.add_resource(
     TokenPollList,
-    '/api/polls/<string:poll_id>/questions')
+    '/api/polls/<string:poll_id>/tokens')
 api.add_resource(
     QuestionPollList,
-    '/api/polls/<string:poll_id>/tokens')
+    '/api/polls/<string:poll_id>/questions')
 api.add_resource(
     EffectQuestionList,
     '/api/polls/<string:poll_id>/effects')

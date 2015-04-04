@@ -2,6 +2,7 @@ from app import db
 from flask.ext.restful import reqparse, Resource
 from app.models import Question, Poll
 from sqlalchemy.exc import IntegrityError
+from flask import jsonify
 questionparser = reqparse.RequestParser()
 questionparser.add_argument('text', type=str, required=True)
 questionparser.add_argument('poll_id', type=int, required=True)
@@ -25,7 +26,7 @@ class QuestionList(Resource):
         questions = Question.query.all()
         results = []
         for question in questions:
-            results.append(question)
+            results.append(question.as_dict())
         return results
 
 
@@ -36,10 +37,11 @@ class QuestionPollList(Resource):
     def get(self, poll_id):
         poll = Poll.query.get(poll_id)
         if poll is not None:
-            questions = poll.query.all()
+            questions = poll.questions.all()
             results = []
             for question in questions:
-                results.append(question)
+                results.append(question.as_dict())
+            print 'from specific list view', results
             return results
         else:
             return self.error_msg["poll"]["404"], 404
@@ -88,4 +90,3 @@ class QuestionView(Resource):
             return {}, 200
         else:
             return self.error_msg['question']['404'], 404
-
