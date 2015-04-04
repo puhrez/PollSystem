@@ -18,6 +18,9 @@ class TestPollApi(TestMixin):
         # no users yet, right?
         eq_(len(resp), 0)
 
+    """
+    QUESTION: Should users be able to put up Polls with the same name?
+    Current Answer: Yes, as long as the ids are different, they are different.
     def test_duplicate_post(self):
         # make a user
         raw = test_app.post(self.endpoint, data=self.resource.as_dict())
@@ -30,6 +33,7 @@ class TestPollApi(TestMixin):
         print raw.data
         self.check_content_type(raw.headers)
         eq_(raw.status_code, 500)
+      """
 
     def test_post(self):
         # amke a poll

@@ -97,6 +97,9 @@ class Question(db.Model, ModelMixin):
       Has a one-to-many relatinoship with Effect
     """
     __tablename__ = 'question'
+    __table_args__ = (
+        UniqueConstraint('poll_id', 'text', name='poll_id_text_que'),
+    )
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(250))
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
@@ -128,7 +131,7 @@ class Effect(db.Model, ModelMixin):
 class Token(db.Model, ModelMixin):
     __tablename__ = 'token'
     __table_args__ = (
-        UniqueConstraint('poll_id', 'text', name='poll_id_text_uix'),
+        UniqueConstraint('poll_id', 'text', name='poll_id_text_tok'),
     )
     """
     This class represents a single token that has:

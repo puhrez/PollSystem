@@ -38,8 +38,8 @@ class TestUserApi(TestMixin):
 
         # check raw.data
         resp = json.loads(raw.data)
-        eq_(resp["email"], "test1@example.com")
-        eq_(resp["name"], "test1")
+        eq_(resp["email"], self.resource.email)
+        eq_(resp["name"], self.resource.name)
 
         raw = test_app.get(self.endpoint)
         self.check_content_type(raw.headers)
@@ -59,9 +59,9 @@ class TestUserApi(TestMixin):
         # check raw.data
         resp = json.loads(raw.data)
         # get a specific user
-        raw = test_app.get('/api/users/%s' % resp['id'])
+        raw = test_app.get(self.endpoint + ('/%s' % resp['id']))
         self.check_content_type(raw.headers)
         resp = json.loads(raw.data)
         # check each field
-        eq_(resp['email'], 'test1@example.com')
-        eq_(resp['name'], 'test1')
+        eq_(resp['email'], self.resource.email)
+        eq_(resp['name'], self.resource.name)
