@@ -97,6 +97,9 @@ class Question(db.Model, ModelMixin):
       Has a one-to-many relatinoship with Effect
     """
     __tablename__ = 'question'
+    __table_args__ = (
+        UniqueConstraint('poll_id', 'text', name='poll_id_text_que'),
+    )
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(250))
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
@@ -128,7 +131,7 @@ class Effect(db.Model, ModelMixin):
 class Token(db.Model, ModelMixin):
     __tablename__ = 'token'
     __table_args__ = (
-        UniqueConstraint('poll_id', 'text', name='poll_id_text_uix'),
+        UniqueConstraint('poll_id', 'text', name='poll_id_text_tok'),
     )
     """
     This class represents a single token that has:
@@ -137,16 +140,17 @@ class Token(db.Model, ModelMixin):
     a minimum value,
     a text which is the token
     Has a backrefernce to is parent poll as'poll'
+    UniqueConstraint -> only one token of a certain name per poll
     """
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
     value = db.Column(db.Integer, default=0)
     maximum = db.Column(db.Integer)
     minimum = db.Column(db.Integer)
-    text = db.Column(db.String(100), unique=True)
+    text = db.Column(db.String(100))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__tabe__.columns}
 
     def __repr__(self):
-        return "<Token id %d>" % (self.value, self.token)
+        return "<Token id %d>" % (self.id)

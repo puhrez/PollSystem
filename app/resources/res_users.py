@@ -2,6 +2,7 @@ from app import db
 from flask.ext.restful import reqparse, Resource
 from app.models import User
 from sqlalchemy.exc import IntegrityError
+import bcrypt
 userparser = reqparse.RequestParser()
 userparser.add_argument('name', type=str, required=True)
 userparser.add_argument('email', type=str, required=True)
@@ -57,15 +58,12 @@ class UserView(Resource):
         """
         args = userparser.parse_args()
         user = User.query.get(user_id)
-        self.abort()
         if user is not None:
-            user = User(
-                name=args['name'],
-                email=args['email'],
-                password=args['password']
-            )
+            user.name = args['name']
+            user.email = args['email']
+            user.password = bcrypt.hashpw(args['password'], bcrypt.gensalt(10))
             db.session.commit()
-            return user, 200
+            return user.as_dict()
         else:
             return self.error_msg['404'], 404
 
