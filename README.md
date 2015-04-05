@@ -1,19 +1,33 @@
 #Engagement Polling System
 
-###Testing
-to test: run nosetests
-
+[![Build Status](https://travis-ci.org/xbs13/PollSystem.svg?branch=master)](https://travis-ci.org/xbs13/PollSystem)
 
 ###Objective
 To create a system where users may easily create polls which engage users in deep thinking about issues and measures where priorities lie in regard to those issues.
 
 ###Stack
 #####Backend Stack
-- RESTful API written in Python with flask
+- RESTful API written in Python 2.7 with Flask
 - Persistence in PostgreSQL
 - Deployment on Heroku
-- Integration testing with Travis
+- Integration testing with [Travis](https://travis-ci.org/xbs13/PollSystem)
 
+#####Installation
+<pre><code>git clone https://github.com/xbs13/PollSystem
+cd PollSystem
+pip install -r requirements.txt</code></pre>
+#####Running
+<pre><code>chmod a+x run.py
+./run.py
+# or
+python run.py</code></pre>
+#####Creation of DB Management system
+<pre><code>chmod a+x db_<action>
+./db_<action>.py
+# or
+python db_<action>.py</code></pre>
+#####Testing
+<pre><code>nosetests<code></pre>
 ###Models and Relationships*
 
 <img src="https://s3.amazonaws.com/nighnight.com/assets/LPSchemeDesignV2.png" alt="Schema Design v2" style="width: 100%;"> 
