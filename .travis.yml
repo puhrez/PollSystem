@@ -8,11 +8,11 @@ branches:
 install: "pip install -r requirements.txt"
 # build database
 env:
-  - DATABASE_URL:
+  - DATABASE_URL=postgres://postgres:@localhost:5432/system_test
 addons:
   postgresql: "9.3"
 before_script:
-  - psql -c "create datase system_test" -U postgres
+  - psql -c "create datase system_test;" -U postgresql
 # command to run tests
 script: nosetests
 # deployment
