@@ -12,7 +12,7 @@ env:
 addons:
   postgresql: "9.3"
 before_script:
-  - psql -c "create datase system_test;" -U postgresql
+  - psql -c "create database system_test;" -U postgres
 # command to run tests
 script: nosetests
 # deployment
