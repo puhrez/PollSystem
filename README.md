@@ -9,7 +9,7 @@ To create a system where users may easily create polls which engage users in dee
 #####Backend Stack
 - RESTful API written in Python 2.7 with Flask
 - Persistence in PostgreSQL
-- Deployment on Heroku
+- Deployment on [Heroku](https://poll-system.herokuapp.com/)
 - Integration testing with [Travis](https://travis-ci.org/xbs13/PollSystem)
 
 #####Installation
