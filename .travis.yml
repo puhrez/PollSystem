@@ -8,3 +8,9 @@ branches:
 install: "pip install -r requirements.txt"
 # command to run tests
 script: nosetests
+# deployment
+deploy:
+  provider:
+    heroku
+  api_key: 98fb273a-fbdd-4a91-969a-e5205032e31c
+  app: poll-system
