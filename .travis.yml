@@ -8,11 +8,11 @@ branches:
 install: "pip install -r requirements.txt"
 # build database
 env:
-  - DATABASE_URL: 'postgres://postgres:@localhost:5432/sermonbuddy_test'
+  - DATABASE_URL:
 addons:
   postgresql: "9.3"
 before_script:
-  - psql -c "created database system_test" -U postgres
+  - psql -c "create datase system_test" -U postgres
 # command to run tests
 script: nosetests
 # deployment
