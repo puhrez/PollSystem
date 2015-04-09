@@ -28,7 +28,7 @@ class UserList(Resource):
         user = User(
             name=args['name'],
             email=args['email'],
-            password=args['password']
+            password=bcrypt.hashpw(args['password'], bcrypt.gensalt(10))
         )
         try:
             db.session.add(user)

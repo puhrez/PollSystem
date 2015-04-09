@@ -1,3 +1,7 @@
+###Admin todo:
+1. get inline effect model 'token_id' column on questions to reflect foreign key constraint
+2. get polls to be populated by user.polls and user.poll_admin
+
 ###API todo:
 1. write and pass tests for error responses.
 2. authentication with flask-login

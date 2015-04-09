@@ -48,11 +48,10 @@ class User(db.Model, ModelMixin):
         backref=db.backref('admins', lazy='dynamic')
     )
 
-    def __init__(self, name, password, email):
-        self.name = name
-        self.password = bcrypt.hashpw(password, bcrypt.gensalt(10))
-        self.email = email
+    def __unicode__(self):
+        return self.email
 
+    # TODO: test this
     def password_match(self, password):
         return bcrypt.hashpw(password, self.password) == self.password
 
@@ -84,6 +83,9 @@ class Poll(db.Model, ModelMixin):
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
     questions = db.relationship('Question', backref='poll', lazy='dynamic')
 
+    def __unicode__(self):
+        return self.name
+
     def __repr__(self):
         return "<Polls %r>" % (self.name)
 
@@ -103,7 +105,10 @@ class Question(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(250))
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
-    effects = db.relationship('Effect', backref='questions', lazy='dynamic')
+    effects = db.relationship('Effect', backref='question', lazy='dynamic')
+
+    def __unicode__(self):
+        return self.text
 
     def __repr__(self):
         return "<Question %r>" % (self.text)
@@ -126,6 +131,9 @@ class Effect(db.Model, ModelMixin):
     value = db.Column(db.Integer)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
+
+    def __unicode__(self):
+        return "Effect %d on token-id %d" % (self.value, self.token)
 
     def __repr__(self):
         return "<Effect %d on token-id %d>" % (self.value, self.token)
@@ -151,6 +159,9 @@ class Token(db.Model, ModelMixin):
     maximum = db.Column(db.Integer)
     minimum = db.Column(db.Integer)
     text = db.Column(db.String(100))
+
+    def __unicode__(self):
+        return self.text
 
     def __repr__(self):
         return "<Token id %d>" % (self.id)
