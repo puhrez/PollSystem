@@ -133,10 +133,16 @@ class Effect(db.Model, ModelMixin):
     token_id = db.Column(db.Integer, db.ForeignKey('token.id'))
 
     def __unicode__(self):
-        return "Effect %d on token-id %d" % (self.value, self.token)
+        return "Effect %d on token-id %d" % (
+            self.value,
+            self.token_id if self.token_id is not None else -1
+        )
 
     def __repr__(self):
-        return "<Effect %d on token-id %d>" % (self.value, self.token)
+        return "<Effect %d on token-id %d>" % (
+            self.value,
+            self.token_id if self.token_id is not None else -1
+        )
 
 
 class Token(db.Model, ModelMixin):

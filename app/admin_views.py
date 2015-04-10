@@ -23,7 +23,7 @@ class UserView(ModelView):
 
 
 class QuestionView(ModelView):
-    inline_models = (models.Effect,)
+    inline_models = (models.Effect, )
 
 
 class PollView(ModelView):
