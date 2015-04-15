@@ -8,7 +8,7 @@ tokenparser.add_argument('value', type=int, required=True)
 tokenparser.add_argument('maximum', type=int, required=True)
 tokenparser.add_argument('minimum', type=int, required=True)
 tokenparser.add_argument('poll_id', type=int, required=True)
-tokenparser.add_argument('text', type=str, required=True)
+tokenparser.add_argument('name', type=str, required=True)
 
 
 class TokenList(Resource):
@@ -17,10 +17,7 @@ class TokenList(Resource):
     """
     def get(self):
         tokens = Token.query.all()
-        results = []
-        for token in tokens:
-            results.append(token.as_dict())
-        return results
+        return [token.as_dict() for token in tokens]
 
 
 class TokenPollList(Resource):
@@ -31,17 +28,14 @@ class TokenPollList(Resource):
         poll = Poll.query.get(poll_id)
         if poll is not None:
             tokens = poll.tokens.all()
-            results = []
-            for token in tokens:
-                results.append(token.as_dict())
-            return results
+            return [token.as_dict() for token in tokens]
         else:
             return not_found("Poll %d" % poll_id), 404
 
     def post(self, poll_id):
         args = tokenparser.parse_args()
         token = Token(
-            text=args['text'],
+            name=args['name'],
             poll_id=args['poll_id'],
             maximum=args['maximum'],
             minimum=args['minimum'],
@@ -70,7 +64,7 @@ class TokenView(Resource):
         args = tokenparser.parse_args()
         token = Token.query.get(token_id)
         if token is not None:
-            token.text = args['text']
+            token.name = args['name']
             token.value = args['value']
             token.maximum = args['maximum']
             token.minimum = args['minimum']

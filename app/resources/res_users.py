@@ -18,10 +18,7 @@ class UserList(Resource):
     def get(self):
         print "hit list get"
         users = User.query.all()
-        results = []
-        for user in users:
-            results.append(user.as_dict())
-        return results
+        return [user.as_dict() for user in users]
 
     def post(self):
         args = userparser.parse_args()

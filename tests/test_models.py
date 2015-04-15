@@ -86,8 +86,8 @@ class TestModels(TestMixin):
         db.session.commit()
 
         # creating tokens
-        t = Token(text="token1")
-        t2 = Token(text="token2")
+        t = Token(name="token1")
+        t2 = Token(name="token2")
         db.session.add(t)
         db.session.add(t2)
         db.session.commit()
@@ -113,8 +113,8 @@ class TestModels(TestMixin):
         db.session.commit()
 
         # creating tokens, value is 0 by default, just making it explicit
-        t = Token(text="token1", value=0)
-        t2 = Token(text="token2", value=0)
+        t = Token(name="token1", value=0)
+        t2 = Token(name="token2", value=0)
         db.session.add(t)
         db.session.add(t2)
         db.session.commit()
@@ -136,8 +136,8 @@ class TestModels(TestMixin):
 
     def test_effects_affect_tokens(self):
         # creating tokens, value is 0 by default, just making it explicit
-        t = Token(text="token1", value=0)
-        t2 = Token(text="token2", value=0)
+        t = Token(name="token1", value=0)
+        t2 = Token(name="token2", value=0)
         db.session.add(t)
         db.session.add(t2)
         db.session.commit()

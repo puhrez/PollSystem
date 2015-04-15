@@ -25,7 +25,7 @@ class TestEffectApi(TestMixin):
         poll = Poll(name="poll test")
         question = Question(text="question test", poll_id=poll.id)
         token = Token(
-            text='token',
+            name='token',
             value=0,
             maximum=50,
             minimum=-50,
@@ -52,7 +52,7 @@ class TestEffectApi(TestMixin):
         poll = Poll(name="poll test")
         question = Question(text="question test", poll_id=poll.id)
         token = Token(
-            text='token',
+            name='token',
             value=0,
             maximum=50,
             minimum=-50,
@@ -90,7 +90,7 @@ class TestEffectApi(TestMixin):
         poll = Poll(name="poll test")
         question = Question(text="question test", poll_id=poll.id)
         token = Token(
-            text='token',
+            name='token',
             value=0,
             maximum=50,
             minimum=-50,

@@ -20,10 +20,7 @@ class PollList(Resource):
     @marshal_with(resource_fields)
     def get(self):
         polls = Poll.query.all()
-        results = []
-        for poll in polls:
-            results.append(poll)
-        return results
+        return [poll.as_dict() for poll in polls]
 
     @marshal_with(resource_fields)
     def post(self):

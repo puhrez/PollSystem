@@ -14,10 +14,7 @@ class QuestionList(Resource):
     """
     def get(self):
         questions = Question.query.all()
-        results = []
-        for question in questions:
-            results.append(question.as_dict())
-        return results
+        return [question.as_dict() for question in questions]
 
 
 class QuestionPollList(Resource):
@@ -28,10 +25,7 @@ class QuestionPollList(Resource):
         poll = Poll.query.get(poll_id)
         if poll is not None:
             questions = poll.questions.all()
-            results = []
-            for question in questions:
-                results.append(question.as_dict())
-            return results
+            return [question.as_dict() for question in questions]
         else:
             return not_found("Poll %d" % poll_id), 404
 

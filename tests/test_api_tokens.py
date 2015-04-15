@@ -27,7 +27,7 @@ class TestTokenApi(TestMixin):
         db.session.commit()
         poll_endpoint = ('/api/polls/%d/tokens' % poll.id)
         resource = Token(
-            text='token',
+            name='token',
             value=0,
             maximum=50,
             minimum=-50,
@@ -50,7 +50,7 @@ class TestTokenApi(TestMixin):
         db.session.commit()
         poll_endpoint = ('/api/polls/%d/tokens' % poll.id)
         resource = Token(
-            text='token',
+            name='token',
             value=0,
             maximum=50,
             minimum=-50,
@@ -64,7 +64,7 @@ class TestTokenApi(TestMixin):
 
         # check raw.data
         resp = json.loads(raw.data)
-        eq_(resp["text"], resource.text)
+        eq_(resp["name"], resource.name)
         eq_(resp["value"], resource.value)
         eq_(resp["maximum"], resource.maximum)
         eq_(resp["minimum"], resource.minimum)
@@ -85,7 +85,7 @@ class TestTokenApi(TestMixin):
         db.session.commit()
         poll_endpoint = ('/api/polls/%d/tokens' % poll.id)
         resource = Token(
-            text='token',
+            name='token',
             value=0,
             maximum=50,
             minimum=-50,
@@ -103,7 +103,7 @@ class TestTokenApi(TestMixin):
         self.check_content_type(raw.headers)
         resp = json.loads(raw.data)
         # check each field
-        eq_(resp["text"], resource.text)
+        eq_(resp["name"], resource.name)
         eq_(resp["value"], resource.value)
         eq_(resp["maximum"], resource.maximum)
         eq_(resp["minimum"], resource.minimum)

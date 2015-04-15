@@ -115,10 +115,6 @@ class Question(db.Model, ModelMixin):
 
 
 class Effect(db.Model, ModelMixin):
-    __tablename__ = 'effect'
-    __table_args__ = (
-        UniqueConstraint('question_id', 'token_id', name='question_id_token'),
-    )
     """
     This class represents a single effect that a question has on a token:
     a unique id,
@@ -127,6 +123,10 @@ class Effect(db.Model, ModelMixin):
     Has a backref to its Question as 'question'
     Has a reference to its respective Token
     """
+    __tablename__ = 'effect'
+    __table_args__ = (
+        UniqueConstraint('question_id', 'token_id', name='question_id_token'),
+    )
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.Integer)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
@@ -146,28 +146,28 @@ class Effect(db.Model, ModelMixin):
 
 
 class Token(db.Model, ModelMixin):
-    __tablename__ = 'token'
-    __table_args__ = (
-        UniqueConstraint('poll_id', 'text', name='poll_id_text_tok'),
-    )
     """
     This class represents a single token that has:
     a unique id,
     a maximum value,
     a minimum value,
-    a text which is the token
+    a name which is the token
     Has a backrefernce to is parent poll as'poll'
     UniqueConstraint -> only one token of a certain name per poll
     """
+    __tablename__ = 'token'
+    __table_args__ = (
+        UniqueConstraint('poll_id', 'name', name='poll_id_text_tok'),
+    )
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
     value = db.Column(db.Integer, default=0)
     maximum = db.Column(db.Integer)
     minimum = db.Column(db.Integer)
-    text = db.Column(db.String(100))
+    name = db.Column(db.String(100))
 
     def __unicode__(self):
-        return self.text
+        return self.name
 
     def __repr__(self):
         return "<Token id %d>" % (self.id)

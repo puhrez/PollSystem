@@ -15,10 +15,7 @@ class EffectList(Resource):
     """
     def get(self):
         effects = Effect.query.all()
-        results = []
-        for effect in effects:
-            results.append(effect.as_dict())
-        return results
+        return [effect.as_dict() for effect in effects]
 
 
 class EffectQuestionList(Resource):
@@ -29,10 +26,7 @@ class EffectQuestionList(Resource):
         question = Question.query.get(question_id)
         if question is not None:
             effects = question.effects.all()
-            results = []
-            for effect in effects:
-                results.append(question.as_dict())
-            return results
+            return [effect.as_dict() for effect in effects]
         else:
             return not_found("Question %d" % question_id), 404
 
@@ -75,4 +69,9 @@ class EffectView(Resource):
             return not_found("Effect %d" % effect_id), 404
 
     def delete(self, effect_id):
-        pass
+        effect = Effect.query.get(effect_id)
+        if effect is not None:
+            db.session.delete(effect)
+            db.session.commit()
+        else:
+            return not_found("Effect %d" % effect_id), 404
