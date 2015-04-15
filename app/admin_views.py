@@ -1,6 +1,6 @@
 from app import admin, models, db
 from flask_admin.contrib.sqla import ModelView
-from wtforms import PasswordField
+from wtforms import PasswordField, TextField
 import bcrypt
 
 
@@ -22,13 +22,19 @@ class UserView(ModelView):
             )
 
 
+class TokenView(ModelView):
+    def scaffold_form(self):
+        form_class = super(TokenView, self).scaffold_form()
+        return form_class
+
+
 class QuestionView(ModelView):
-    inline_models = (models.Effect, )
+    inline_models = (TokenView(models.Effect, db.session), )
 
 
 class PollView(ModelView):
     form_excluded_columns = ('timestamp', )
-    inline_models = (models.Question, models.Token)
+    inline_models = (models.Token, QuestionView(models.Question, db.session))
 
 
 admin.add_view(PollView(models.Poll, db.session))
