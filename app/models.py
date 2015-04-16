@@ -159,6 +159,7 @@ class Token(db.Model, ModelMixin):
     __table_args__ = (
         UniqueConstraint('poll_id', 'name', name='poll_id_text_tok'),
     )
+    effects = db.relationship('Effect', backref='token', lazy='dynamic')
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'))
     value = db.Column(db.Integer, default=0)
